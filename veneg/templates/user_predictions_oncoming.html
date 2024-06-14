@@ -1,0 +1,41 @@
+{% extends "layout2.html" %}
+{% block content %}
+<h1>Predicciones</h1>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Partido</th>
+            <th>Editar</th>
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for prediction in predictions %}
+        <tr>
+            <td>{{ prediction.match.date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ prediction.match.date.strftime('%H:%M') }}</td>
+            <td>{{ prediction.match.home_team }} vs {{ prediction.match.away_team }}</td>
+            <td><a href="{{ url_for('users.update_prediction', match_id=prediction.match_id) }}">Edit</a></td>
+        </tr>
+        {% endfor  %}
+    </tbody>
+
+</table>
+
+{% for page_num in predictions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+    {% if page_num %}
+        {% if predictions.page == page_num %}
+            <a href="{{ url_for('users.user_predictions_oncoming', page=page_num) }}" class="btn btn-dark">{{ page_num }}</a>
+        {% else %}
+            <a href="{{ url_for('users.user_predictions_oncoming', page=page_num) }}" class="btn btn-outline-dark">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+{% endfor %}
+
+{% endblock content %}

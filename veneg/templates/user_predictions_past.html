@@ -1,0 +1,41 @@
+{% extends "layout2.html" %}
+{% block content %}
+<h1>Predicciones finalizadas</h1>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Partido</th>
+            <th>Info</th>
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for prediction in predictions %}
+        <tr class="{{ 'table-success' if prediction.prediction == prediction.match.result else 'table-danger' }}">
+            <td>{{ prediction.match.date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ prediction.match.date.strftime('%H:%M') }}</td>
+            <td>{{ prediction.match.home_team }} vs {{ prediction.match.away_team }}</td>
+            <td><a href="{{  url_for('matches.match_info', match_id=prediction.match.id) }}" class="btn btn-outline-dark">Partido</a></td>
+        </tr>
+        {% endfor  %}
+    </tbody>
+
+</table>
+
+{% for page_num in predictions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+    {% if page_num %}
+        {% if predictions.page == page_num %}
+            <a href="{{ url_for('users.user_predictions_past', page=page_num) }}" class="btn btn-dark">{{ page_num }}</a>
+        {% else %}
+            <a href="{{ url_for('users.user_predictions_past', page=page_num) }}" class="btn btn-outline-dark">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+{% endfor %}
+
+{% endblock content %}

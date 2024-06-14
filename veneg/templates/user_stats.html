@@ -1,0 +1,61 @@
+{% extends "layout2.html" %}
+{% block content %}
+<h1>Estadísticas</h1>
+
+<h2>Has realizado {{ total }} apuestas</h2>
+<h3>{{ correct[1] }} correctas</h3>
+<h3>{{ wrong }} incorrectas</h3>
+<small>{{ total - (correct[1] + wrong) }} aún no concluyen</small>
+
+<div class="card mt-5">
+    <div class="card-header">
+      Desempeño
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title">Con apuestas promedio de: </h5>
+            </div>
+            <div class="col">
+                <input type="number" value="100" min="0" onchange="updateValue(this.value)">
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col">
+                <h5 >Recibirías este mes </h5>
+            </div>
+            <div class="col">
+                <input id="earnings-month" type="text" value="100" disabled>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5 >Recibirías históricamente: </h5>
+            </div>
+            <div class="col">
+                <input id="earnings-total" type="text" value="100" disabled>
+            </div>
+        </div>
+      
+    </div>
+  </div>
+
+{% endblock content %}
+
+
+{% block javascript %}
+<script>
+    updateValue(100)
+    function updateValue(value){
+        console.log("ejecutando funcion");
+        const earningsTotal = {{ correct[2] }};
+        const earningsMonth = {{ month_correct[2] if month_correct[2] else 0 }}
+        const totalWrong = {{ wrong }}
+        const monthWrong = {{ month_wrong }}
+        month = document.getElementById("earnings-month")
+        total = document.getElementById("earnings-total")
+        month.value = (value * earningsMonth) - (value * monthWrong);
+        total.value = (value * earningsTotal) - (value * totalWrong);
+    }
+</script>
+{% endblock javascript %}

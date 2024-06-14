@@ -1,0 +1,62 @@
+<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    
+    <a href="{{ url_for('users.home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+        <span class="fs-4">Home</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+            Home
+          </a>
+        </li>
+        
+        {% if current_user.is_authenticated %}
+        <li>
+          <a href="{{ url_for('matches.next') }}" class="nav-link text-white">
+            <svg class="bi me-2 text-white" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+            Next
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('users.user_predictions_oncoming') }}" class="nav-link text-white">
+            <svg class="bi me-2 text-white" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+            Oncoming
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('users.user_predictions_past') }}" class="nav-link text-white">
+            <svg class="bi me-2 text-white" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+            Past
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+
+
+    <hr>
+    <div class="pb-3">
+      {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('users.login') }}" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+            Login
+        </a>
+    
+        <a href="{{ url_for('users.register') }}" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+            Register
+        </a>
+    
+      {% else %}
+      
+        <a href="{{ url_for('users.logout') }}" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+            Logout
+        </a>
+      {% endif %}
+    </div>
+    
+</div>
+</div>

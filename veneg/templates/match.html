@@ -1,0 +1,114 @@
+{% extends "layout2.html" %}
+{% block content %}
+
+<h1 class="mb-3">{{ match.home_team }} vs {{ match.away_team }}</h1>
+
+{% if match.date > now %}
+    <a href="{{ url_for('users.prediction', match_id=match.id) }}" class="btn btn-outline-dark mb-3">Place bet</a>
+{% endif  %}
+
+<div class="card" id="countdown-timer">
+    <div class="row card-body">
+        <div class="col justify-content-md-center">
+            <p id="days">00</p>
+            <span>Días</span>
+        </div>
+        <div class="col">
+            <p id="hours">00</p>
+            <span>Horas</span>
+        </div>
+        <div class="col">
+            <p id="minutes">00</p>
+            <span>Minutos</span>
+        </div>
+        <div class="col">
+            <p id="seconds">00</p>
+            <span>Segundos</span>
+        </div>
+    </div>
+</div>
+
+<div class="mb-3" style="height: 70%;">
+    <canvas id="myChart"></canvas>
+</div>
+
+
+
+
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+
+<script>
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: {{ labels | safe}},
+    datasets: [{
+      label: '# de Apuestas',
+      data: {{ values | safe }},
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Placed bets'
+      }
+    }
+  }
+});
+
+
+
+
+    // COUNTER
+    let matchStart = new Date( "{{ match.date }}" );
+    let now = new Date().getTime();
+
+    if((matchStart - now) <= 0){
+        document.getElementById("countdown-timer").style.display = "none";
+    }
+
+
+    let counter = setInterval(()=>{
+        let now = new Date().getTime();
+        let distance = matchStart - now;
+
+        
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        if (distance <= 0){
+            days = "00";
+            hours = "00";
+            minutes = "00";
+            seconds = "00";
+            clearInterval(counter);
+        }
+
+        document.getElementById("days").innerHTML = days;
+        document.getElementById("hours").innerHTML = hours;
+        document.getElementById("minutes").innerHTML = minutes;
+        document.getElementById("seconds").innerHTML = seconds;
+
+    },1000)
+
+ 
+
+</script>
+{% endblock javascript %}

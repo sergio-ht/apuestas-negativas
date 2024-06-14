@@ -1,0 +1,46 @@
+{% extends "layout2.html" %}
+{% block content %}
+<h1>Siguientes Partidos</h1>
+{% if matches.total == 0 %}
+    <h2>No hay más partidos próximos. Revisa más tarde.</h2>
+{% else %} 
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Local</th>
+                <th>Visitante</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            <tr>
+                <td>{{ match.date }}</td>
+                <td>{{ match.home_team }}</td>
+                <td>{{ match.away_team }}</td>
+                <td>
+                    <a href={{ url_for("matches.match_info", match_id=match.id ) }} class="btn btn-outline-dark">Info</a>
+                    <a href={{ url_for("users.prediction", match_id=match.id ) }} class="btn btn-outline-dark">Apostar</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% for page_num in matches.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=1) %}
+    {% if page_num %}
+        {% if matches.page == page_num %}
+            <a href="{{ url_for('matches.next', page=page_num) }}" class="btn btn-dark">{{ page_num }}</a>
+            {% else %}
+            <a href="{{ url_for('matches.next', page=page_num) }}" class="btn btn-outline-dark">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+
+{% endif %} 
+
+{% endblock content %}

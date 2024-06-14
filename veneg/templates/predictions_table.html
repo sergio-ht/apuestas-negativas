@@ -1,0 +1,27 @@
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Partido</th>
+            {% if oncoming %}
+            <th>Editar</th>
+            {% endif %}
+            
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for prediction in predictions %}
+        <tr>
+            <td>{{ prediction.match.date.strftime('%Y-%m-%d') }}</td>
+            <td>{{ prediction.match.date.strftime('%H:%M') }}</td>
+            <td>{{ prediction.match.home_team }} vs {{ prediction.match.away_team }}</td>
+            {% if oncoming %}
+            <td><a href="{{ url_for('users.update_prediction', match_id=prediction.match_id) }}">Edit</a></td>
+            {% endif %}
+        </tr>
+        {% endfor  %}
+    </tbody>
+
+</table>

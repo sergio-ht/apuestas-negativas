@@ -1,0 +1,63 @@
+<aside id="sidebar" class="expand">
+    <div class="d-flex">
+        <button class="toggle-btn" type="button">
+            <i class="lni lni-grid-alt"></i>
+        </button>
+        <div class="sidebar-logo">
+            <a href="#">APUESTAS NEGATIVAS</a>
+        </div>
+    </div>
+    <ul class="sidebar-nav">
+        {% if current_user.is_authenticated %}
+        <li class="sidebar-item">
+            <a href="{{ url_for('users.user_stats') }}" class="sidebar-link">
+                <i class="lni lni-bar-chart"></i>
+                <span>Estadísticas</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ url_for('matches.next') }}" class="sidebar-link">
+                <i class="lni lni-arrow-right"></i>
+                <span>Siguientes Partidos</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link  has-dropdown" data-bs-toggle="collapse"
+                data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="lni lni-protection"></i>
+                <span>Apuestas</span>
+            </a>
+            <ul id="auth" class="sidebar-dropdown list-unstyled" data-bs-parent="#sidebar">
+                <li class="sidebar-item" style="padding-left: 35px;">
+                    <a href="{{ url_for('users.user_predictions_oncoming') }}" class="sidebar-link">Futuras</a>
+                </li>
+                <li class="sidebar-item" style="padding-left: 35px;">
+                    <a href="{{ url_for('users.user_predictions_past') }}" class="sidebar-link">Completadas</a>
+                </li>
+            </ul>
+        </li>
+        {% else %}
+        <li class="sidebar-item">
+            <a href="{{ url_for('users.login') }}" class="sidebar-link">
+                <i class="lni lni-enter"></i>
+                <span>Login</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="{{ url_for('users.register') }}" class="sidebar-link">
+                <i class="lni lni-user"></i>
+                <span>Register</span>
+            </a>
+        </li>
+        {% endif %}
+        
+    </ul>
+    {% if current_user.is_authenticated %}
+    <div class="sidebar-footer">
+        <a href="{{ url_for('users.logout') }}" class="sidebar-link">
+            <i class="lni lni-exit"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+    {% endif %}
+</aside>
